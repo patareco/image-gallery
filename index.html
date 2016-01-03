@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/ResizeSensor.js"></script>
+	<script src="js/ElementQueries.js"></script>
+    
+    <style type="text/css">
+        /*fix overflow hidden on html/body*/
+        html, body {margin: 0; padding: 0; overflow: hidden}
+        
+        .img-wrapper {overflow: hidden; padding: 0; margin: 0}
+        /*.img-wrapper .img {transform: translate(-204px,0px)}*/
+        .img-wrapper .img { transition: transform 0.3s ease-out}
+        
+    </style>
+</head>
+
+<body>
+    <div class="img-wrapper">
+        <img src="images/image1.jpg" alt="test" class="img" />
+    </div>
+</body>
+</html>
+
+<script>
+
+    $(document).ready( function() {
+        
+		//element cache
+        $window = $( window );
+        $img    = $('.img');
+		
+		//vars declaration
+        var winW, winH, imgW, imgH;
+        
+		
+		function updateImgSize() {
+			imgW = $img.width();
+            imgH = $img.height();
+		}
+		
+		
+        $window.resize(function() { 
+            
+            winW = $window.width();
+            winH = $window.height();
+            
+            $('.img-wrapper').width(winW);
+            $('.img-wrapper').height(winH);
+            
+            
+            
+            $('.img').height(winH);
+			$('.img').width('auto');
+			
+			updateImgSize();
+            
+                       
+            if ( winW >= imgW && winH <= imgH )
+            {  
+                $('.img').width(winW);
+                $('.img').height('auto');
+                				
+				updateImgSize();
+            }
+                
+            //console.log(winH);
+        });
+
+        $(window).trigger('resize');
+		
+		$( document ).on( "mousemove", function( event ) {
+  			
+			posX = event.pageX;
+			posY = event.pageY;
+			diff = winW-imgW;
+			diff2 = winH-imgH;
+			
+			//console.log('X: ' + posX + '  ' + 'Y: ' + posY);
+			//console.log(winW-imgW);
+			//console.log(winW);
+			/*
+			posX __ winW
+			offx __ diffWP&IMG
+			*/
+			trans = diff * posX / winW
+			
+			$('.img-wrapper .img').css( 'transform', 'translate('+trans+'px,0px)' );
+			
+			
+			if ( winW >= imgW && winH <= imgH )
+            {
+				trans2 = diff2 * posY / winH;
+				//console.log(imgH + ' ' + winH);
+			
+			$('.img-wrapper .img').css( 'transform', 'translate(0px,'+trans2+'px)' );
+				
+			}
+		
+		});
+        
+    });
+    
+</script>

@@ -1,0 +1,13 @@
+the resizesensor
+
+
+(function(){
+                new ResizeSensor($sWrapper, function(el){
+                    console.log('Changed to ' + $('.single-wrapper').width()+'px width.');
+					console.log('Changed to ' + $('.single-wrapper').height()+'px height.');
+					//imgW = $sWrapper.width();
+            		//imgH = $sWrapper.height();
+					
+                });
+            })();
+		
